@@ -14,7 +14,7 @@
 //#include <cstring>
 //#include <unistd.h>
 
-#include "LMS1xx.h"
+#include "LMS1xx2.h"
 
 #include <ws2tcpip.h>
 #include <winsock2.h>
@@ -164,14 +164,17 @@ void LMS1xx::SetScanConfig(const ScanConfig &cfg)
 	buf[len - 1] = 0;
 }
 
-void LMS1xx::setScanDataCfg(const scanDataCfg &cfg) {
+void LMS1xx::SetScanDataConfig(const scanDataCfg &cfg) 
+{
 	char buf[100];
 	sprintf(buf, "%c%s %02X 00 %d %d 0 %02X 00 %d %d 0 %d +%d%c", 0x02,
 			"sWN LMDscandatacfg", cfg.outputChannel, cfg.remission ? 1 : 0,
 			cfg.resolution, cfg.encoder, cfg.position ? 1 : 0,
 			cfg.deviceName ? 1 : 0, cfg.timestamp ? 1 : 0, cfg.outputInterval, 0x03);
-	if(debug)
+	if (debug)
+	{
 		printf("%s\n", buf);
+	}
 	write(sockDesc, buf, strlen(buf));
 
 	int len = read(sockDesc, buf, 100);
