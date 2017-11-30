@@ -20,7 +20,11 @@ void main()
 	Theory:
 	Use of right shifts to enable certain sections only after a number of loops
 	*/
+<<<<<<< HEAD
 	int n = 0, s = 0;
+=======
+	int n=0, s=0;
+>>>>>>> working
 	
 	for(int i=0; ; i++)
 	{
