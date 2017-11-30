@@ -10,15 +10,13 @@ int g(int i, int x, int t, int o)
 	return ( (3 & x & ( i * (arr2[t%8] + 51 ) >> o)) << 4 );
 }
 
-
-
 void main()
 {
 	/*
 	Theory:
 	Use of right shifts to enable certain sections only after a number of loops
 	*/
-	int n, s;
+	int n = 0, s = 0;
 	
 	for(int i=0; ; i++)
 	{
