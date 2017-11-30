@@ -11,8 +11,6 @@ class NetworkManager;
 
 #include "LIDAR.h"
 #include <WinLibTypes.h>
-#include <vector>
-#include <string>
 
 class NetworkManager
 {
@@ -41,6 +39,11 @@ public:
 	void Initialize(std::string netIP, std::string netPort);
 
 	void Shutdown();
+
+	void WriteMessage(std::string message);
+
+	bool Send(char *data, int size);
+	bool Recv(char *data, int size);
 };
 
 

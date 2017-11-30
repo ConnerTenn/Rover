@@ -87,7 +87,7 @@ void NetworkManager::Initialize(std::string netIP, std::string netPort)
 
 	freeaddrinfo(info);
 
-	Lidar->DebugConsole->Write("Network successfully initilized\n");
+	WriteMessage("Network successfully initilized\n");
 
 
 	//Run = true;
@@ -109,6 +109,32 @@ void NetworkManager::Shutdown()
 
 	WSACleanup();
 }
+
+void NetworkManager::WriteMessage(std::string message)
+{
+	Lidar->DebugConsole->Write(message);
+}
+
+bool NetworkManager::Send(char *data, int size)
+{
+	if (send(SocketData.Socket, data, size, 0) == SOCKET_ERROR)
+	{
+		WriteMessage("ERROR::Send failed:" + std::to_string(WSAGetLastError()) + "\n");
+		return false;
+	}
+	return true;
+}
+
+bool NetworkManager::Recv(char *data, int size)
+{
+	if (recv(SocketData.Socket, data, size, 0) == SOCKET_ERROR)
+	{
+		WriteMessage("ERROR::Recieve failed:" + std::to_string(WSAGetLastError()) + "\n");
+		return false;
+	}
+	return true;
+}
+
 
 
 /*

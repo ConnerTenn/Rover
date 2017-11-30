@@ -3,6 +3,7 @@ class LIDAR;
 
 #pragma once
 
+#include "Globals.h"
 #include "NetworkManager.h"
 #include <WinLib.h>
 

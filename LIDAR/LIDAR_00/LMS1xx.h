@@ -43,8 +43,32 @@ struct ScanData
 	uint16_t Rssi2[1082]; //Remission values for the second reflected pulse
 };
 
+enum Status
+{
+	undefined = 0,
+	initialisation = 1,
+	configuration = 2,
+	idle = 3,
+	rotated = 4,
+	inPreparation = 5,
+	ready = 6,
+	readyForMeasurement = 7
+};
+
 class LMS1xx
 {
+	LIDAR *Lidar;
+	NetworkManager *Network;
+	
+	LMS1xx(LIDAR *lidar, NetworkManager *network);
+	~LMS1xx();
 
+	void Start();
+	void Stop();
+
+	Status GetStatus();
+
+	//Increase privilege level, giving ability to change device configuration.
+	void Login();
 };
 
