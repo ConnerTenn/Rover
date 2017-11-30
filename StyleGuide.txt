@@ -1,0 +1,18 @@
+NOTE: I've currently filled this with my own style as a template. This means that it is subject to change as we see fit.
+
+Curly Braces:
+	Open and close on their own, separate lines
+	
+	Control blocks must include curly brackets
+	Example:
+		//Good
+		if (1)
+		{
+			foo()
+		}
+		
+		//Bad
+		if (1)
+			foo()
+	
+	
