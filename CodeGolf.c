@@ -18,7 +18,7 @@ void main()
 	*/
 	int n, s;
 	
-	for(int i=0; ; i++)
+	for(int i = 0; ; i++)
 	{
 		putchar(
 			g(i,	1,	  n=i>>14,		12) + 
