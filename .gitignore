@@ -1,0 +1,9 @@
+*.db
+*.db-shm
+*.db-wal
+*.ipch
+*.vcxproj
+*.filters
+*.idb
+*.tlog
+*.sln
