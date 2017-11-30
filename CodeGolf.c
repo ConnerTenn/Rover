@@ -10,8 +10,6 @@ int g(int i, int x, int t, int o)
 	return ( (3 & x & ( i * (arr2[t%8] + 51 ) >> o)) << 4 );
 }
 
-
-
 void main()
 {
 	/*
