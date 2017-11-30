@@ -55,13 +55,13 @@ enum Status
 	readyForMeasurement = 7
 };
 
-class LMS1xx
+class LMS
 {
 	LIDAR *Lidar;
 	NetworkManager *Network;
 	
-	LMS1xx(LIDAR *lidar, NetworkManager *network);
-	~LMS1xx();
+	LMS(LIDAR *lidar, NetworkManager *network);
+	~LMS();
 
 	void Start();
 	void Stop();
