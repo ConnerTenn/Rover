@@ -1,4 +1,4 @@
-//b
+
 #include <stdio.h>
 
 int g(int i, int x, int t, int o)
