@@ -6,10 +6,9 @@ class LMS1xx;
 
 #include "LIDAR.h"
 
-#define L_START 0x2
-0x2
-
-const char sMN[3] = { 0x73, 0x4D, 0x4E };
+const char L_start = 0x2;
+const char L_end = 0x3;
+const char L_sMN[3] = { 0x73, 0x4D, 0x4E };
 
 struct ScanConfig
 {
