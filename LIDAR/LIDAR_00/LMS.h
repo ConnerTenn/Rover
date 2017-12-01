@@ -6,6 +6,11 @@ class LMS1xx;
 
 #include "LIDAR.h"
 
+#define L_START 0x2
+#define L_END 0x2
+
+const char sMN[ = {}
+
 struct ScanConfig
 {
 	int Frequency; // 1/100 Hz
@@ -63,12 +68,18 @@ class LMS
 	LMS(LIDAR *lidar, NetworkManager *network);
 	~LMS();
 
-	void Start();
-	void Stop();
+	void Start(); //starts spinning laser and measuring.
+	void Stop(); //stops spinning laser and measuring.
 
+	void Login(); //Increase privilege level, giving ability to change device configuration.
+
+	void StartDevice();
+	
 	Status GetStatus();
 
-	//Increase privilege level, giving ability to change device configuration.
-	void Login();
+	void SetScanConfig(ScanConfig config);
+	void SaveConfig();
+	void ScanContinous(bool continous);
+	void GetData(ScanData *data);
 };
 
