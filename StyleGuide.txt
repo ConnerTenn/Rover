@@ -1,47 +1,53 @@
 NOTE: I've currently filled this with my own style as a template. This means that it is subject to change as we see fit.
 
-Curly Braces:
-	-Open and close on their own, separate lines
-	-Control blocks must include curly brackets
-	-If the items inside of a control block only contain a couple statements, the entire thing can be written on a single line. Discression must be used when determining when to use this. The purpose is to group slightly longer bits of code into a compact block for ease of reading, also when the calculation is used once and therefore doesn't deserve a function.
-	Good Example:
-		if (condition)
-		{
-			foo()
-		}
-		
-		if (i) { foo(); }
-		
-	Bad Example:
-		if (condition) {
-			foo();
-		}
+GitHub:
 	
-		if (condition)
-			foo()
-		
-		if (condition) { if (condition2) { stuff(); stuff2(); if (condition2) { stuff3(); } } 
-	
-Pointers:
-	-the '*' is always located attatched to the variable.
-	Good Example:
-		int *a = 0;
-		*a = new int(3);
-		*a = *a + 3
-		int *b, *c, *d;
-	Bad Example:
-		int * a;
-		int* b;
-		int* c, * d, * e;
-		
-Variable, Class, Function Names:
-	-Local Variables
-		-camel case
-	-Global Variables
-		-Capitalized
-	-Class Member Variables
-		-Capitalized
-	-Function Names	
-		-Capitalized
 
+C++:
+	Curly Braces:
+		-Open and close on their own, separate lines
+		-Control blocks must include curly brackets
+		-If the items inside of a control block only contain a couple statements, the entire thing can be written on a single line. Discression must be used when determining when to use this. The purpose is to group slightly longer bits of code into a compact block for ease of reading, also when the calculation is used once and therefore doesn't deserve a function.
+		Good Example:
+			if (condition)
+			{
+				foo()
+			}
+			
+			if (i) { foo(); }
+			
+		Bad Example:
+			if (condition) {
+				foo();
+			}
+		
+			if (condition)
+				foo()
+			
+			if (condition) { if (condition2) { stuff(); stuff2(); if (condition2) { stuff3(); } } 
+		
+	Pointers:
+		-the '*' is always located attatched to the variable.
+		Good Example:
+			int *a = 0;
+			*a = new int(3);
+			*a = *a + 3
+			int *b, *c, *d;
+		Bad Example:
+			int * a;
+			int* b;
+			int* c, * d, * e;
+			
+	Variable, Class, Function Names:
+		-Local Variables
+			-camel case
+		-Global Variables
+			-Capitalized
+		-Class Member Variables
+			-Capitalized
+		-Function Names	
+			-Capitalized
+
+Java:
+	NOTE:: Use the C++ style guide as a template but it may differ due to typical language styles
 
