@@ -3,7 +3,7 @@ NOTE: I've currently filled this with my own style as a template. This means tha
 Curly Braces:
 	-Open and close on their own, separate lines
 	-Control blocks must include curly brackets
-	-If the items inside of a control block only contain a couple statements, the entire thing can be written on a single line. Discression must be used when determining when to use this. The purpose is to group slightly longer bits of code into a compact block for ease of reading, also when the calculation is used once and therefore doesn't deserve a function. 
+	-If the items inside of a control block only contain a couple statements, the entire thing can be written on a single line. Discression must be used when determining when to use this. The purpose is to group slightly longer bits of code into a compact block for ease of reading, also when the calculation is used once and therefore doesn't deserve a function.
 	Good Example:
 		if (condition)
 		{
