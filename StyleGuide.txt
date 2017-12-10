@@ -1,13 +1,19 @@
+
 NOTE: I've currently filled this with my own style as a template. This means that it is subject to change as we see fit.
 
 GitHub:
-	
+	-Each device that access the github must uses it's own working branch when modifying code Eample "ConnerDesktopWorking"
+	-The branch must be reviewed before it is merged into the main branch.
 
 C++:
 	Curly Braces:
 		-Open and close on their own, separate lines
 		-Control blocks must include curly brackets
-		-If the items inside of a control block only contain a couple statements, the entire thing can be written on a single line. Discression must be used when determining when to use this. The purpose is to group slightly longer bits of code into a compact block for ease of reading, also when the calculation is used once and therefore doesn't deserve a function.
+		-If the items inside of a control block only contain a couple statements, the entire thing can be written on a single line. 
+		 Discression must be used when determining when to use this. The purpose of this is to group slightly longer bits of code 
+		 into a compact block for ease of reading. This is also used for when the calculation is used only once or twice and 
+		 doesn't deserve it's own special function.
+		-It is acceptable to use curly braces to control scope and section off code into sub sections within a function.
 		Good Example:
 			if (condition)
 			{
@@ -16,18 +22,24 @@ C++:
 			
 			if (i) { foo(); }
 			
+			//defines a scope
+			{
+				int localvar;
+			}
+			//local var no longer exists
+			
 		Bad Example:
 			if (condition) {
 				foo();
 			}
 		
 			if (condition)
-				foo()
+				foo();
 			
 			if (condition) { if (condition2) { stuff(); stuff2(); if (condition2) { stuff3(); } } 
 		
 	Pointers:
-		-the '*' is always located attatched to the variable.
+		-the '*' is always located attatched to the variable. This is to both save space and avoid the last bad example.
 		Good Example:
 			int *a = 0;
 			*a = new int(3);
@@ -38,7 +50,7 @@ C++:
 			int* b;
 			int* c, * d, * e;
 			
-	Variable, Class, Function Names:
+	Naming Convention:
 		-Local Variables
 			-camel case
 		-Global Variables
@@ -47,7 +59,11 @@ C++:
 			-Capitalized
 		-Function Names	
 			-Capitalized
+		-Macros
+			-All Caps with Underscores seperating words
 
 Java:
-	NOTE:: Use the C++ style guide as a template but it may differ due to typical language styles
-
+	NOTE:: Use the C++ style guide as a template but it may differ due to differing language styles
+	NOTE:: I (Conner) will not make any definitive decisions for the Java style guide since i will not be dealing with this part of the 
+	 code as much. It is up to those who will be writing most of this code to determine the style guide.
+	
