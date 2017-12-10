@@ -4,13 +4,13 @@
 	
 	<Style_Guide>
 		<Description>
-		-The xml format is used. This is so that parts can be easily organized into sections. As well as this, xml viewers will allow 
-		 the ability to collapse sections so that the viewer can collapse the ones that they do not want to see.
-		-Description section
-			-Points for descriptions are indicated with a "-". This is so that the viewer can easily distinguish separate points when
-			 points are multi line.
-			-When points are multiline, the next line is indented with a single space to indicate that it is part of the previous line.
-			 This also alignes the start of the next line with the start of the previous line of text (accounts for the "-"). 
+			-The xml format is used. This is so that parts can be easily organized into sections. As well as this, xml viewers will
+			allow the ability to collapse sections so that the viewer can collapse the ones that they do not want to see.
+			-Description section
+				-Points for descriptions are indicated with a "-". This is so that the viewer can easily distinguish separate points
+				 when points are multi line.
+				-When points are multiline, the next line is indented with a single space to indicate that it is part of the previous
+				 line. This also alignes the start of the next line with the start of the previous line of text (accounts for the "-"). 
 		</Description>
 	</Style_Guide>
 	
@@ -77,7 +77,7 @@
 			</Bad_Example>
 		</Pointers>
 				
-		Naming Convention:
+		<Naming_Convention>
 			-Local Variables
 				-camel case
 				 This is to signify that the variable is only local
@@ -87,16 +87,19 @@
 			-Class Member Variables
 				-Capitalized
 				 This is to signify that this is a member variable that has scope of the entire class. This is also useful when a local 
-				 variable would likely have a same name but there needs to be a way to distinguish them. For example, for setter functions
-				 having the same name as the member variables that they are setting.
+				 variable would likely have a same name but there needs to be a way to distinguish them. For example, for setter
+				 functions having the same name as the member variables that they are setting.
 			-Function Names	
 				-Capitalized
 			-Macros
 				-All Caps with Underscores seperating words
-		</C++>
-	Java:
+		</Naming_Convention>
+	</C++>
+	
+	<Java>
 		NOTE:: Use the C++ style guide as a template but it may differ due to differing language styles
-		NOTE:: I (Conner) will not make any definitive decisions for the Java style guide since i will not be dealing with this part of the 
-		 code as much. It is up to those who will be writing most of this code to determine the style guide.
-		
+		NOTE:: I (Conner) will not make any definitive decisions for the Java style guide since i will not be dealing with this part
+		 of the code as much. It is up to those who will be writing most of this code to determine the style guide.
+	</Java>
+	
 </Root>
