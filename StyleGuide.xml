@@ -1,0 +1,102 @@
+
+<Root>
+	NOTE: I've currently filled this with my own style as a template. This means that it is subject to change as we see fit.
+	
+	<Style_Guide>
+		<Description>
+		-The xml format is used. This is so that parts can be easily organized into sections. As well as this, xml viewers will allow 
+		 the ability to collapse sections so that the viewer can collapse the ones that they do not want to see.
+		-Description section
+			-Points for descriptions are indicated with a "-". This is so that the viewer can easily distinguish separate points when
+			 points are multi line.
+			-When points are multiline, the next line is indented with a single space to indicate that it is part of the previous line.
+			 This also alignes the start of the next line with the start of the previous line of text (accounts for the "-"). 
+		</Description>
+	</Style_Guide>
+	
+	<Github>
+		-Each device that access the github must uses it's own working branch when modifying code Eample "ConnerDesktopWorking"
+		-The branch must be reviewed before it is merged into the main branch.
+	</Github>
+		
+	<C++>
+		<Curly_Braces>
+			<Description>
+				-Open and close on their own, separate lines
+				-Control blocks must include curly brackets
+				-If the items inside of a control block only contain a couple statements, the entire thing can be written on a single 
+				 line. Discression must be used when determining when to use this. The purpose of this is to group slightly longer bits
+				 of code into a compact block for ease of reading. This is also used for when the calculation is used only once or 
+				 twice and doesn't deserve it's own special function.
+				-It is acceptable to use curly braces to control scope and section off code into sub sections within a function.
+			</Description>
+			
+			<Good_Example>
+				if (condition)
+				{
+					foo()
+				}
+				
+				if (i) { foo(); }
+				
+				//defines a scope
+				{
+					int localvar;
+				}
+				//local var no longer exists
+			</Good_Example>
+			
+			<Bad_Example>
+				if (condition) {
+					foo();
+				}
+			
+				if (condition)
+					foo();
+				
+				if (condition) { if (condition2) { stuff(); stuff2(); if (condition2) { stuff3(); } }
+			</Bad_Example>
+		</Curly_Braces>
+			
+		<Pointers>
+			<Description>
+				-the '*' is always located attatched to the variable. This is to both save space and avoid the last bad example.
+			</Description>
+			
+			<Good_Example>
+				int *a = 0;
+				*a = new int(3);
+				*a = *a + 3
+				int *b, *c, *d;
+			</Good_Example>
+			
+			<Bad_Example>
+				int * a;
+				int* b;
+				int* c, * d, * e;
+			</Bad_Example>
+		</Pointers>
+				
+		Naming Convention:
+			-Local Variables
+				-camel case
+				 This is to signify that the variable is only local
+			-Global Variables
+				-Capitalized
+				 This is to distinguish between local variables and global variables
+			-Class Member Variables
+				-Capitalized
+				 This is to signify that this is a member variable that has scope of the entire class. This is also useful when a local 
+				 variable would likely have a same name but there needs to be a way to distinguish them. For example, for setter functions
+				 having the same name as the member variables that they are setting.
+			-Function Names	
+				-Capitalized
+			-Macros
+				-All Caps with Underscores seperating words
+		</C++>
+	Java:
+		NOTE:: Use the C++ style guide as a template but it may differ due to differing language styles
+		NOTE:: I (Conner) will not make any definitive decisions for the Java style guide since i will not be dealing with this part of the 
+		 code as much. It is up to those who will be writing most of this code to determine the style guide.
+		
+</Root>
