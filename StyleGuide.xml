@@ -79,10 +79,10 @@
 				
 		<Naming_Convention>
 			-Local Variables
-				-camel case
+				-Camel case
 				 This is to signify that the variable is only local
 			-Global Variables
-				-Capitalized
+				-Capitalize each word
 				 This is to distinguish between local variables and global variables
 			-Class Member Variables
 				-Capitalized
@@ -90,15 +90,16 @@
 				 variable would likely have a same name but there needs to be a way to distinguish them. For example, for setter
 				 functions having the same name as the member variables that they are setting.
 			-Function Names	
-				-Capitalized
+				-Capitalize each word
+				 This is to further differentiate functions as being separate from variables
 			-Macros
 				-All Caps with Underscores seperating words
 		</Naming_Convention>
 		
 		<File_Layout>
 			<Description>
-				-Header Guard
-				-
+				-Header Guard uses #ifndef-#define-#endif blocks for the header guard
+				-Header files do not contain actual executed code; that must be placed in a cpp file instead.
 			</Description>
 		</File_Layout>
 	</CPP>
