@@ -34,10 +34,10 @@
 			<Good_Example>
 				if (condition)
 				{
-					foo()
+					Foo();
 				}
 				
-				if (i) { foo(); }
+				if (i) { Foo(); }
 				
 				//defines a scope
 				{
@@ -54,7 +54,7 @@
 				if (condition)
 					foo();
 				
-				if (condition) { if (condition2) { stuff(); stuff2(); if (condition2) { stuff3(); } } }
+				if (condition) { if (condition2) { stuff(); stuff2(); if (condition2) { stuff3(); } loadsMoreStuff(); } }
 			</Bad_Example>
 		</Curly_Braces>
 			
