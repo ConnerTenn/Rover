@@ -9,3 +9,9 @@
 *.sln
 *.tmp
 *.opendb
+*.obj
+*.exe
+*.cache
+*.log
+*.dll
+*.lib
