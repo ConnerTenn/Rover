@@ -1,6 +1,6 @@
 
 struct ScanConfig;
-class LMS1xx;
+class LMS;
 
 #pragma once
 
@@ -61,6 +61,7 @@ enum Status
 
 class LMS
 {
+public:
 	LIDAR *Lidar;
 	NetworkManager *Network;
 	

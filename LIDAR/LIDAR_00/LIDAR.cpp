@@ -30,12 +30,15 @@ LIDAR::LIDAR(HINSTANCE hInstance, INT iCmdShow)
 	Network = new NetworkManager(this);
 	Network->Initialize("169.254.13.237", "2111");
 
+	LMSInterface = new LMS(this, Network);
+	LMSInterface->Start();
 
 	WindowPtr->Draw();
 }
 
 LIDAR::~LIDAR()
 {
+	delete LMSInterface;
 	delete Network;
 	delete DebugConsole;
 	delete WindowPtr;
@@ -46,6 +49,9 @@ void LIDAR::Run()
 	WindowPtr->AddMessage(MessageData({ WL_UPDATESURFACE, 0, 0 }), true);
 
 	DebugConsole->Write("FLOW::Begin Main Loop\n");
+
+
+
 	while (!WindowPtr->State.Quit)
 	{
 		WindowPtr->PreMsg();
