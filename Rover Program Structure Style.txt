@@ -1,0 +1,14 @@
+Threads: 
+	- Motor contol
+	- Lidar
+	- Comms
+
+Motor Control
+class IO
+
+	class Motor
+		
+		class PWM
+
+	class Sensor
+
