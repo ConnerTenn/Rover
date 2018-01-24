@@ -5,7 +5,7 @@ class LIDAR;
 
 #include "Globals.h"
 #include "NetworkManager.h"
-#include "LMS.h"
+#include "LMS1xx.h"
 #include <WinLib.h>
 
 class LIDAR
@@ -15,7 +15,7 @@ public:
 	Window *WindowPtr;
 	Console *DebugConsole;
 	NetworkManager *Network;
-	LMS *LMSInterface;
+	LMS1xx *LMSInterface;
 
 	LIDAR(HINSTANCE hInstance, INT iCmdShow);
 	~LIDAR();

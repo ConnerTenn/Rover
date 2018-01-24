@@ -14,6 +14,8 @@ typedef uint8_t u2b;
 typedef uint8_t u4b;
 typedef uint8_t u8b;
 
-void ArrCpy(u8 *dest, const u8 src[], u64 len);
-void ArrCpy(char *dest, const char src[], u64 len);
+void ArrCpy(u8 *dest, u8 *src, u64 len);
+void ArrCpy(char *dest, char *src, u64 len);
+void ArrCpy(u8 *dest, u8 *src, u64 len, u64 *offset);
+void ArrCpy(char *dest, char *src, u64 len, u64 *offset);
 
