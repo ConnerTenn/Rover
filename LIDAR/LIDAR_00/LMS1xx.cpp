@@ -3,74 +3,83 @@
  *
  *  Created on: 09-08-2010
  *  Author: Konrad Banachowicz
- */
+ ***************************************************************************
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Lesser General Public            *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2.1 of the License, or (at your option) any later version.    *
+ *                                                                         *
+ *   This library is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU     *
+ *   Lesser General Public License for more details.                       *
+ *                                                                         *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with this library; if not, write to the Free Software   *
+ *   Foundation, Inc., 59 Temple Place,                                    *
+ *   Suite 330, Boston, MA  02111-1307  USA                                *
+ *                                                                         *
+ ***************************************************************************/
 
 #include <sys/types.h>
 //#include <sys/socket.h>
 //#include <netinet/in.h>
 //#include <arpa/inet.h>
-//#include <cstdio>
-//#include <cstdlib>
-//#include <cstring>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 //#include <unistd.h>
 
-#include "LMS1xx2.h"
+#include "LMS1xx.h"
 
-#include <ws2tcpip.h>
-#include <winsock2.h>
-//#include <windows.h>
-#include <iphlpapi.h>
-#pragma comment(lib, "Ws2_32.lib")
+#define _CRT_SECURE_NO_WARNINGS
 
-LMS1xx::LMS1xx(LIDAR *lidar) :
-	Connected(false), Debug(false), Lidar(lidar)
-{
+LMS1xx::LMS1xx() :
+	connected(false) {
+	debug = false;
 }
 
-LMS1xx::~LMS1xx() 
-{
+LMS1xx::~LMS1xx() {
 
 }
 
-void LMS1xx::Connect(std::string host, int port) 
-{
-	if (!Connected) 
-	{
-		SockDescription = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
-		if (SockDescription) 
-		{
+/*void LMS1xx::connect(std::string host, int port) {
+	if (!connected) {
+		sockDesc = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+		if (sockDesc) {
 			struct sockaddr_in stSockAddr;
 			int Res;
 			stSockAddr.sin_family = PF_INET;
 			stSockAddr.sin_port = htons(port);
 			Res = inet_pton(AF_INET, host.c_str(), &stSockAddr.sin_addr);
 
-			int ret = connect(SockDescription, (struct sockaddr *) &stSockAddr, sizeof stSockAddr);
-			if (!ret) 
-			{
-				Connected = true;
+			int ret = ::connect(sockDesc, (struct sockaddr *) &stSockAddr,
+					sizeof stSockAddr);
+			if (ret == 0) {
+				connected = true;
 			}
 		}
 	}
-}
-
-void LMS1xx::Disconnect() 
-{
-	if (Connected) 
-	{
-		closesocket(SockDescription);
-		Connected = false;
+}*/
+/*
+void LMS1xx::disconnect() {
+	if (connected) {
+		close(sockDesc);
+		connected = false;
 	}
+}*/
+
+bool LMS1xx::isConnected() {
+	return connected;
 }
 
-void LMS1xx::Start() 
-{
+void LMS1xx::startMeas() {
 	char buf[100];
 	sprintf(buf, "%c%s%c", 0x02, "sMN LMCstartmeas", 0x03);
 
-	send(SockDescription, buf, strlen(buf), 0);
+	Network->Send(buf, strlen(buf));
 
-	int len = recv(SockDescription, buf, 100, 0);
+	int len = Network->Recv(buf, 100);
 	//	if (buf[0] != 0x02)
 	//		std::cout << "invalid packet recieved" << std::endl;
 	//	if (debug) {
@@ -79,14 +88,44 @@ void LMS1xx::Start()
 	//	}
 }
 
-void LMS1xx::Stop() 
+void LMS1xx::Start()
 {
+	const char L_start = 0x2;
+	const char L_end = 0x3;
+
+	std::string outstr;
+	u64 offset = 0;
+	char *buf = new char[1 + 16 + 1 + 1];
+	//*(char *)(buf + offset) = L_start; offset += sizeof(u8);
+	//ArrCpy(buf, "sMN LMCstartmeas", 16); offset += sizeof(u8) * 16;
+	//*(char *)(buf + offset) = L_end; offset += sizeof(u8);
+	ArrCpy(buf, (char *)&L_start, sizeof(u8), &offset);
+	ArrCpy(buf, "sMN LMCstartmeas", sizeof(u8) * 16, &offset);
+	ArrCpy(buf, "\x3", sizeof(u8), &offset);
+	ArrCpy(buf, (char *)&L_end, sizeof(u8), &offset); offset--;
+
+	Network->Send(buf, offset);
+
+	outstr = buf;
+	//Lidar->DebugConsole->Write("Sending:" + outstr + "\n");
+
+	buf[0] = 0; buf[1] = 0;
+
+	Network->Recv(buf, 100);
+
+	outstr = buf;
+	//Lidar->DebugConsole->Write("Recieved:" + outstr + "\n");
+
+	//delete[] buf;
+}
+
+void LMS1xx::stopMeas() {
 	char buf[100];
 	sprintf(buf, "%c%s%c", 0x02, "sMN LMCstopmeas", 0x03);
 
-	send(SockDescription, buf, strlen(buf), 0);
+	Network->Send(buf, strlen(buf));
 
-	int len = recv(SockDescription, buf, 100, 0);
+	int len = Network->Recv(buf, 100);
 	//	if (buf[0] != 0x02)
 	//		std::cout << "invalid packet recieved" << std::endl;
 	//	if (debug) {
@@ -95,14 +134,13 @@ void LMS1xx::Stop()
 	//	}
 }
 
-Status LMS1xx::GetStatus() 
-{
+status_t LMS1xx::queryStatus() {
 	char buf[100];
 	sprintf(buf, "%c%s%c", 0x02, "sRN STlms", 0x03);
 
-	send(SockDescription, buf, strlen(buf), 0);
+	Network->Send(buf, strlen(buf));
 
-	int len = recv(SockDescription, buf, 100, 0);
+	int len = Network->Recv(buf, 100);
 	//	if (buf[0] != 0x02)
 	//		std::cout << "invalid packet recieved" << std::endl;
 	//	if (debug) {
@@ -111,19 +149,17 @@ Status LMS1xx::GetStatus()
 	//	}
 	int ret;
 	sscanf((buf + 10), "%d", &ret);
-	//ret = *(int *)(buf+10)
 
-	return (Status) ret;
+	return (status_t) ret;
 }
 
-void LMS1xx::Login()
-{
+void LMS1xx::login() {
 	char buf[100];
 	sprintf(buf, "%c%s%c", 0x02, "sMN SetAccessMode 03 F4724744", 0x03);
 
-	send(SockDescription, buf, strlen(buf), 0);
+	Network->Send(buf, strlen(buf));
 
-	int len = recv(SockDescription, buf, 100, 0);
+	int len = Network->Recv(buf, 100);
 	//	if (buf[0] != 0x02)
 	//		std::cout << "invalid packet recieved" << std::endl;
 	//	if (debug) {
@@ -132,15 +168,14 @@ void LMS1xx::Login()
 	//	}
 }
 
-ScanConfig LMS1xx::GetScanConfig() const 
-{
-	ScanConfig cfg;
+scanCfg LMS1xx::getScanCfg() const {
+	scanCfg cfg;
 	char buf[100];
 	sprintf(buf, "%c%s%c", 0x02, "sRN LMPscancfg", 0x03);
 
-	send(SockDescription, buf, strlen(buf), 0);
+	Network->Send(buf, strlen(buf));
 
-	int len = recv(SockDescription, buf, 100, 0);
+	int len = Network->Recv(buf, 100);
 	//	if (buf[0] != 0x02)
 	//		std::cout << "invalid packet recieved" << std::endl;
 	//	if (debug) {
@@ -148,36 +183,35 @@ ScanConfig LMS1xx::GetScanConfig() const
 	//		std::cout << buf << std::endl;
 	//	}
 
-	sscanf(buf + 1, "%*s %*s %X %*d %X %X %X", &cfg.scaningFrequency, &cfg.angleResolution, &cfg.startAngle, &cfg.stopAngle);
+	sscanf(buf + 1, "%*s %*s %X %*d %X %X %X", &cfg.scaningFrequency,
+			&cfg.angleResolution, &cfg.startAngle, &cfg.stopAngle);
 	return cfg;
 }
 
-void LMS1xx::SetScanConfig(const ScanConfig &cfg) 
-{
+void LMS1xx::setScanCfg(const scanCfg &cfg) {
 	char buf[100];
-	sprintf(buf, "%c%s %X +1 %X %X %X%c", 0x02, "sMN mLMPsetscancfg", cfg.scaningFrequency, cfg.angleResolution, cfg.startAngle, cfg.stopAngle, 0x03);
+	sprintf(buf, "%c%s %X +1 %X %X %X%c", 0x02, "sMN mLMPsetscancfg",
+			cfg.scaningFrequency, cfg.angleResolution, cfg.startAngle,
+			cfg.stopAngle, 0x03);
 
-	send(SockDescription, buf, strlen(buf), 0);
+	Network->Send(buf, strlen(buf));
 
-	int len = recv(SockDescription, buf, 100, 0);
+	int len = Network->Recv(buf, 100);
 
 	buf[len - 1] = 0;
 }
 
-void LMS1xx::SetScanDataConfig(const scanDataCfg &cfg) 
-{
+void LMS1xx::setScanDataCfg(const scanDataCfg &cfg) {
 	char buf[100];
 	sprintf(buf, "%c%s %02X 00 %d %d 0 %02X 00 %d %d 0 %d +%d%c", 0x02,
 			"sWN LMDscandatacfg", cfg.outputChannel, cfg.remission ? 1 : 0,
 			cfg.resolution, cfg.encoder, cfg.position ? 1 : 0,
 			cfg.deviceName ? 1 : 0, cfg.timestamp ? 1 : 0, cfg.outputInterval, 0x03);
-	if (debug)
-	{
+	if(debug)
 		printf("%s\n", buf);
-	}
-	write(sockDesc, buf, strlen(buf));
+	Network->Send(buf, strlen(buf));
 
-	int len = read(sockDesc, buf, 100);
+	int len = Network->Recv(buf, 100);
 	buf[len - 1] = 0;
 }
 
@@ -185,9 +219,9 @@ void LMS1xx::scanContinous(int start) {
 	char buf[100];
 	sprintf(buf, "%c%s %d%c", 0x02, "sEN LMDscandata", start, 0x03);
 
-	write(sockDesc, buf, strlen(buf));
+	Network->Send(buf, strlen(buf));
 
-	int len = read(sockDesc, buf, 100);
+	int len = Network->Recv(buf, 100);
 
 	if (buf[0] != 0x02)
 		printf("invalid packet recieved\n");
@@ -199,7 +233,7 @@ void LMS1xx::scanContinous(int start) {
 
 	if (start = 0) {
 		for (int i = 0; i < 10; i++)
-			read(sockDesc, buf, 100);
+			Network->Recv(buf, 100);
 	}
 }
 
@@ -218,7 +252,7 @@ void LMS1xx::getData(scanData& data) {
 		tv.tv_usec = 50000;
 		retval = select(sockDesc + 1, &rfds, NULL, NULL, &tv);
 		if (retval) {
-			len += read(sockDesc, buf + len, 20000 - len);
+			len += Network->Recv(buf + len, 20000 - len);
 		}
 	} while ((buf[0] != 0x02) || (buf[len - 1] != 0x03));
 
@@ -371,9 +405,9 @@ void LMS1xx::saveConfig() {
 	char buf[100];
 	sprintf(buf, "%c%s%c", 0x02, "sMN mEEwriteall", 0x03);
 
-	write(sockDesc, buf, strlen(buf));
+	Network->Send(buf, strlen(buf));
 
-	int len = read(sockDesc, buf, 100);
+	int len = Network->Recv(buf, 100);
 	//	if (buf[0] != 0x02)
 	//		std::cout << "invalid packet recieved" << std::endl;
 	//	if (debug) {
@@ -386,9 +420,9 @@ void LMS1xx::startDevice() {
 	char buf[100];
 	sprintf(buf, "%c%s%c", 0x02, "sMN Run", 0x03);
 
-	write(sockDesc, buf, strlen(buf));
+	Network->Send(buf, strlen(buf));
 
-	int len = read(sockDesc, buf, 100);
+	int len = Network->Recv(buf, 100);
 	//	if (buf[0] != 0x02)
 	//		std::cout << "invalid packet recieved" << std::endl;
 	//	if (debug) {

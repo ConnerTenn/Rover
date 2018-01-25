@@ -29,6 +29,8 @@
 				 of code into a compact block for ease of reading. This is also used for when the calculation is used only once or 
 				 twice and doesn't deserve it's own special function.
 				-It is acceptable to use curly braces to control scope and section off code into sub sections within a function.
+				-if-else pairs can either be written inline or double inline, if the control block is small enough
+				-longer if-else if-else clains can be written each inline, if the control block is small enough
 			</Description>
 			
 			<Good_Example>
@@ -44,6 +46,16 @@
 					int localvar;
 				}
 				//local var no longer exists
+				
+				if (condition) { DoTrue(); } else { DoTalse(); }
+				
+				if (condition) { DoTrue(); } 
+				else { DoFalse(); }
+				
+				if (condition) { DoOne(); } 
+				else if (condition) { DoTwo(); } 
+				else if (condition) { DoThree(); } 
+				else { DoElse(); }
 			</Good_Example>
 			
 			<Bad_Example>

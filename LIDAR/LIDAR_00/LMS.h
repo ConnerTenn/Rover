@@ -1,14 +1,14 @@
 
 struct ScanConfig;
-class LMS1xx;
+class LMS;
 
 #pragma once
 
 #include "LIDAR.h"
 
-const char L_start = 0x2;
-const char L_end = 0x3;
-const char L_sMN[3] = { 0x73, 0x4D, 0x4E };
+//const char L_start = 0x2;
+//const char L_end = 0x3;
+//const char L_sMN[3] = { 0x73, 0x4D, 0x4E };
 
 struct ScanConfig
 {
@@ -61,11 +61,15 @@ enum Status
 
 class LMS
 {
+public:
 	LIDAR *Lidar;
 	NetworkManager *Network;
 	
 	LMS(LIDAR *lidar, NetworkManager *network);
 	~LMS();
+
+	void Send(char *buf, int size);
+	void Recv(char *buf, int size);
 
 	void Start(); //starts spinning laser and measuring.
 	void Stop(); //stops spinning laser and measuring.
@@ -77,6 +81,9 @@ class LMS
 	Status GetStatus();
 
 	void SetScanConfig(ScanConfig config);
+	ScanConfig GetScanConfig();
+	void SetScanDataConfig(ScanDataConfig config);
+	//ScanDataConfig GetScanDataConfig();
 	void SaveConfig();
 	void ScanContinous(bool continous);
 	void GetData(ScanData *data);
