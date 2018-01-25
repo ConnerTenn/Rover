@@ -72,7 +72,17 @@ void LMS::Login()
 	char buf[100];
 	sprintf(buf, "%c%s%c", 0x02, "sMN SetAccessMode 03 F4724744", 0x03);
 
-	Send(buf, strlen(buf);
+	Send(buf, strlen(buf));
+
+	Recv(buf, 100);
+}
+
+void LMS::StartDevice()
+{
+	char buf[100];
+	sprintf(buf, "%c%s%c", 0x02, "sMN Run", 0x03);
+
+	Send(buf, strlen(buf));
 
 	Recv(buf, 100);
 }
@@ -149,11 +159,11 @@ void LMS::ScanContinous(bool start)
 	}
 }
 
-void LMS1xx::getData(scanData& data)
+void LMS::GetData(scanData *data)
 {
 	char buf[20000];
-	fd_set rfds;
-	struct timeval tv;
+	fd_set rfds; //WinSock struct
+	struct timeval tv; //WinSock struct
 	int retval, len;
 	len = 0;
 
@@ -364,19 +374,5 @@ void LMS1xx::getData(scanData& data)
 
 }
 
-void LMS1xx::startDevice()
-{
-	char buf[100];
-	sprintf(buf, "%c%s%c", 0x02, "sMN Run", 0x03);
 
-	Network->Send(buf, strlen(buf));
-
-	int len = Network->Recv(buf, 100);
-	//	if (buf[0] != 0x02)
-	//		std::cout << "invalid packet recieved" << std::endl;
-	//	if (debug) {
-	//		buf[len] = 0;
-	//		std::cout << buf << std::endl;
-	//	}
-}
 
