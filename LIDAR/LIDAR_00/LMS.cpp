@@ -14,7 +14,7 @@ LMS::~LMS()
 
 void LMS::Send(char *buf, int size)
 {
-	if (!Network->Send(buf, 100))
+	if (Network->Send(buf, 100) == -1)
 	{
 		Lidar->DebugConsole->Write("Error Sending Data\n");
 	}
@@ -22,7 +22,7 @@ void LMS::Send(char *buf, int size)
 
 void LMS::Recv(char *buf, int size)
 {
-	if (!Network->Recv(buf, 100))
+	if (Network->Recv(buf, 100) == -1)
 	{
 		Lidar->DebugConsole->Write("Error Recieving Data");
 	}
@@ -137,9 +137,11 @@ void LMS::SaveConfig()
 	Recv(buf, 100);
 }
 
+/*Potential Protocol Issue. Do Not Call*/
 void LMS::ScanContinous(bool start)
 {
 	char buf[100];
+	throw("");
 	sprintf(buf, "%c%s %d%c", 0x02, "sEN LMDscandata", start, 0x03);
 
 	Send(buf, strlen(buf));
@@ -149,8 +151,9 @@ void LMS::ScanContinous(bool start)
 	/*
 	#### #### WARNING #### ####
 	Possible Unintended Behaviour
-	*/
 	if (start = 0)
+	*/
+	if (start == 0)
 	{
 		for (int i = 0; i < 10; i++)
 		{
@@ -162,10 +165,9 @@ void LMS::ScanContinous(bool start)
 void LMS::GetData(scanData *data)
 {
 	char buf[20000];
-	fd_set rfds; //WinSock struct
-	struct timeval tv; //WinSock struct
-	int retval, len;
-	len = 0;
+	//fd_set rfds; //WinSock struct
+	//struct timeval tv; //WinSock struct
+	int retval, len = 0;
 
 	do
 	{

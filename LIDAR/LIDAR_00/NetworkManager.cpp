@@ -115,24 +115,26 @@ void NetworkManager::WriteMessage(std::string message)
 	Lidar->DebugConsole->Write(message);
 }
 
-bool NetworkManager::Send(char *data, int size)
+int NetworkManager::Send(char *data, int size)
 {
-	if (send(SocketData.Socket, data, size, 0) == SOCKET_ERROR)
+	int len = send(SocketData.Socket, data, size, 0);
+	if (len == SOCKET_ERROR)
 	{
 		WriteMessage("ERROR::Send failed:" + std::to_string(WSAGetLastError()) + "\n");
-		return false;
+		return -1;
 	}
-	return true;
+	return len;
 }
 
-bool NetworkManager::Recv(char *data, int size)
+int NetworkManager::Recv(char *data, int size)
 {
-	if (recv(SocketData.Socket, data, size, 0) == SOCKET_ERROR)
+	int len = recv(SocketData.Socket, data, size, 0);
+	if (len == SOCKET_ERROR)
 	{
 		WriteMessage("ERROR::Recieve failed:" + std::to_string(WSAGetLastError()) + "\n");
-		return false;
+		return -1;
 	}
-	return true;
+	return len;
 }
 
 
