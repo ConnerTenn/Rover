@@ -31,11 +31,34 @@ LIDAR::LIDAR(HINSTANCE hInstance, INT iCmdShow)
 	Network->Initialize("169.254.13.237", "2111");
 
 	{
+		Data = new ScanData();
+
+		DebugConsole->Write("LMS::Creating LMS\n");
 		LMSInterface = new LMS(this, Network);
 		//LMSInterface->Stop();
 		LMSInterface->Network = Network;
 		LMSInterface->Login();
 		LMSInterface->Stop();
+		
+		DebugConsole->Write("LMS::Getting ScanConfig\n");
+		ScanConfig config = LMSInterface->GetScanConfig();
+		config.Resolution = 5000;
+		config.Frequency = 5000;
+		DebugConsole->Write("LMS::Setting ScanConfig\n");
+		LMSInterface->SetScanConfig(config);
+
+		ScanDataConfig dataConfig;
+		dataConfig.DeviceName = false;
+		dataConfig.Encoder = 0;
+		dataConfig.OutputChannel = 3;
+		dataConfig.Remission = true;
+		dataConfig.Resolution = 0;
+		dataConfig.Position = false;
+		dataConfig.OutputInterval = 1;
+		DebugConsole->Write("LMS::Setting ScanDataConfig\n");
+		LMSInterface->SetScanDataConfig(dataConfig);
+
+		DebugConsole->Write("LMS::Starting\n");
 		LMSInterface->Start();
 		//scanCfg c = LMSInterface->getScanCfg();
 
@@ -43,6 +66,12 @@ LIDAR::LIDAR(HINSTANCE hInstance, INT iCmdShow)
 		//c.scaningFrequency = 5000;
 
 		//LMSInterface->setScanCfg(c);
+
+		while (LMSInterface->GetStatus() != readyForMeasurement) { Sleep(1); }
+		DebugConsole->Write("LMS::Ready for Measurement\n");
+
+		LMSInterface->ScanContinous(1);
+
 	}
 
 	WindowPtr->Draw();
@@ -50,6 +79,11 @@ LIDAR::LIDAR(HINSTANCE hInstance, INT iCmdShow)
 
 LIDAR::~LIDAR()
 {
+	delete Data;
+
+	LMSInterface->ScanContinous(0);
+	LMSInterface->Stop();
+
 	delete LMSInterface;
 	delete Network;
 	delete DebugConsole;
@@ -63,9 +97,6 @@ void LIDAR::Run()
 	DebugConsole->Write("FLOW::Begin Main Loop\n");
 
 	
-
-
-
 	while (!WindowPtr->State.Quit)
 	{
 		WindowPtr->PreMsg();
@@ -92,6 +123,11 @@ void LIDAR::GraphicCallback(MessageData message)
 		WindowPtr->WindowSurface->DrawRectangle(DebugConsole->TextSurface->GetRect(), Colour(255, 255, 255));
 		WindowPtr->Draw();
 
+	}
+	else if (message == WM_TIMER && message.WParam() == 1)
+	{
+		LMSInterface->GetData(Data);
+		DebugConsole->Write("LMS::Receive Data\n");
 	}
 }
 
