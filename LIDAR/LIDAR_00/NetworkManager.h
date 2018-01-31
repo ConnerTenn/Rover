@@ -42,8 +42,8 @@ public:
 
 	void WriteMessage(std::string message);
 
-	bool Send(char *data, int size);
-	bool Recv(char *data, int size);
+	int Send(char *data, int size);
+	int Recv(char *data, int size);
 };
 
 

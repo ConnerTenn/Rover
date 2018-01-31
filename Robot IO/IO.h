@@ -12,6 +12,15 @@ class Sensor : public IO
 	
 };
 
+class PWM
+{
+	u8 Value;
+}
+
+class GPIO
+{
+	bool Value;
+}
 
 #endif
 

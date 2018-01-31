@@ -17,6 +17,7 @@
 	<Github>
 		-Each device that access the github must uses it's own working branch when modifying code Eample "ConnerDesktopWorking"
 		-The branch must be reviewed before it is merged into the main branch.
+		-Commit changes often so that there are recent fall back point in case of an issue
 	</Github>
 		
 	<CPP>
@@ -90,6 +91,7 @@
 		</Pointers>
 				
 		<Naming_Convention>
+			-Note this section is subject to change
 			-Local Variables
 				-Camel case
 				 This is to signify that the variable is only local

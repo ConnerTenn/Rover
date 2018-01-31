@@ -4,6 +4,7 @@ Threads:
 	- Comms
 
 Motor Control
+-Is inheritance even needed? What is shared functionality; dependant on what hardware is being used.
 class IO
 
 	class Motor
