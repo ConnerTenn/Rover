@@ -162,21 +162,21 @@ void LMS::ScanContinous(bool start)
 	}
 }
 
-void LMS::GetData(scanData *data)
+void LMS::GetData(ScanData *data)
 {
 	char buf[20000];
-	//fd_set rfds; //WinSock struct
-	//struct timeval tv; //WinSock struct
+	fd_set rfds; //WinSock struct
+	struct timeval tv; //WinSock struct
 	int retval, len = 0;
 
 	do
 	{
 		FD_ZERO(&rfds);
-		FD_SET(sockDesc, &rfds);
+		FD_SET(Network->SocketData.Socket, &rfds);
 
 		tv.tv_sec = 0;
 		tv.tv_usec = 50000;
-		retval = select(sockDesc + 1, &rfds, NULL, NULL, &tv);
+		retval = select(Network->SocketData.Socket + 1, &rfds, NULL, NULL, &tv);
 		if (retval)
 		{
 			len += Network->Recv(buf + len, 20000 - len);
@@ -217,8 +217,9 @@ void LMS::GetData(scanData *data)
 	tok = strtok(NULL, " "); //NumberChannels16Bit
 	int NumberChannels16Bit;
 	sscanf(tok, "%d", &NumberChannels16Bit);
-	if (debug)
-		printf("NumberChannels16Bit : %d\n", NumberChannels16Bit);
+	
+	Lidar->DebugConsole->Write(std::string("NumberChannels16Bit: ") + std::to_string(NumberChannels16Bit) + "\n");
+
 	for (int i = 0; i < NumberChannels16Bit; i++)
 	{
 		int type = -1; // 0 DIST1 1 DIST2 2 RSSI1 3 RSSI2
@@ -249,24 +250,23 @@ void LMS::GetData(scanData *data)
 		int NumberData;
 		sscanf(tok, "%X", &NumberData);
 
-		if (debug)
-			printf("NumberData : %d\n", NumberData);
+		Lidar->DebugConsole->Write(std::string("NumberData: ") + std::to_string(NumberData) + "\n");
 
 		if (type == 0)
 		{
-			data.dist_len1 = NumberData;
+			data->DistSize1 = NumberData;
 		}
 		else if (type == 1)
 		{
-			data.dist_len2 = NumberData;
+			data->DistSize2 = NumberData;
 		}
 		else if (type == 2)
 		{
-			data.rssi_len1 = NumberData;
+			data->RssiSize1 = NumberData;
 		}
 		else if (type == 3)
 		{
-			data.rssi_len2 = NumberData;
+			data->RssiSize2 = NumberData;
 		}
 
 		for (int i = 0; i < NumberData; i++)
@@ -277,19 +277,19 @@ void LMS::GetData(scanData *data)
 
 			if (type == 0)
 			{
-				data.dist1[i] = dat;
+				data->Dist1[i] = dat;
 			}
 			else if (type == 1)
 			{
-				data.dist2[i] = dat;
+				data->Dist2[i] = dat;
 			}
 			else if (type == 2)
 			{
-				data.rssi1[i] = dat;
+				data->Rssi1[i] = dat;
 			}
 			else if (type == 3)
 			{
-				data.rssi2[i] = dat;
+				data->Rssi2[i] = dat;
 			}
 
 		}
@@ -298,8 +298,9 @@ void LMS::GetData(scanData *data)
 	tok = strtok(NULL, " "); //NumberChannels8Bit
 	int NumberChannels8Bit;
 	sscanf(tok, "%d", &NumberChannels8Bit);
-	if (debug)
-		printf("NumberChannels8Bit : %d\n", NumberChannels8Bit);
+	
+	Lidar->DebugConsole->Write(std::string("NumberChannels8Bit: ") + std::to_string(NumberChannels8Bit) + "\n");
+
 	for (int i = 0; i < NumberChannels8Bit; i++)
 	{
 		int type = -1;
@@ -330,24 +331,23 @@ void LMS::GetData(scanData *data)
 		int NumberData;
 		sscanf(tok, "%X", &NumberData);
 
-		if (debug)
-			printf("NumberData : %d\n", NumberData);
+		Lidar->DebugConsole->Write(std::string("NumberData: ") + std::to_string(NumberData) + "\n");
 
 		if (type == 0)
 		{
-			data.dist_len1 = NumberData;
+			data->DistSize1 = NumberData;
 		}
 		else if (type == 1)
 		{
-			data.dist_len2 = NumberData;
+			data->DistSize2 = NumberData;
 		}
 		else if (type == 2)
 		{
-			data.rssi_len1 = NumberData;
+			data->RssiSize1 = NumberData;
 		}
 		else if (type == 3)
 		{
-			data.rssi_len2 = NumberData;
+			data->RssiSize2 = NumberData;
 		}
 		for (int i = 0; i < NumberData; i++)
 		{
@@ -357,19 +357,19 @@ void LMS::GetData(scanData *data)
 
 			if (type == 0)
 			{
-				data.dist1[i] = dat;
+				data->Dist1[i] = dat;
 			}
 			else if (type == 1)
 			{
-				data.dist2[i] = dat;
+				data->Dist2[i] = dat;
 			}
 			else if (type == 2)
 			{
-				data.rssi1[i] = dat;
+				data->Rssi1[i] = dat;
 			}
 			else if (type == 3)
 			{
-				data.rssi2[i] = dat;
+				data->Rssi2[i] = dat;
 			}
 		}
 	}

@@ -31,13 +31,12 @@ LIDAR::LIDAR(HINSTANCE hInstance, INT iCmdShow)
 	Network->Initialize("169.254.13.237", "2111");
 
 	{
-		LMSInterface = new LMS1xx;// (this, Network);
+		LMSInterface = new LMS(this, Network);
 		//LMSInterface->Stop();
 		LMSInterface->Network = Network;
-		LMSInterface->login();
-		LMSInterface->stopMeas();
+		LMSInterface->Login();
+		LMSInterface->Stop();
 		LMSInterface->Start();
-		LMSInterface->startMeas();
 		//scanCfg c = LMSInterface->getScanCfg();
 
 		//c.angleResolution = 5000;
