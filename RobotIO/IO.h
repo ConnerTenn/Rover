@@ -5,7 +5,8 @@
 //Include in this file?
 class Network
 {
-
+	int Read(char *buff, u32 len);
+	int Write(char *buff, u32 len);
 };
 
 class I2C
@@ -31,10 +32,10 @@ class GPIO
 
 class Sensor
 {
-
+	//Contains different interface objects based on type of sensor
 };
 
-//Redundant
+//Redundant? 
 class Motor
 {
 		
