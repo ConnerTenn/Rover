@@ -9,9 +9,13 @@
 *.sln
 *.tmp
 *.opendb
+<<<<<<< .merge_file_a96948
 *.obj
 *.exe
 *.cache
 *.log
 *.dll
 *.lib
+=======
+*.swp
+>>>>>>> .merge_file_a97292
