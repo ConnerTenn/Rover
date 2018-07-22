@@ -1,3 +1,4 @@
+
 /*
  * LMS1xx.h
  *
@@ -21,32 +22,18 @@
  *                                                                         *
  ***************************************************************************/
 
-class LMS1xx;
-
 #ifndef LMS1XX_H_
 #define LMS1XX_H_
 
+#include <iostream>
 #include <string>
 #include <stdint.h>
-#include "NetworkManager.h"
 
-/*!
-* @class scanCfg
-* @brief Structure containing scan configuration.
-*
-* @author Konrad Banachowicz
-*/
 typedef struct _scanCfg {
-	/*!
-	 * @brief Scanning frequency.
-	 * 1/100 Hz
-	 */
+	//Scanning frequency. 1/100 Hz
 	int scaningFrequency;
 
-	/*!
-	 * @brief Scanning resolution.
-	 * 1/10000 degree
-	 */
+	//Scanning resolution. 1/10000 degree
 	int angleResolution;
 
 	/*!
@@ -197,8 +184,6 @@ typedef enum {
 
 class LMS1xx {
 public:
-	NetworkManager *Network;
-
 	LMS1xx();
 	virtual ~LMS1xx();
 
@@ -225,7 +210,6 @@ public:
 	* After receiving this command LMS1xx unit starts spinning laser and measuring.
 	*/
 	void startMeas();
-	void Start();
 
 	/*!
 	* @brief Stop measurements.
