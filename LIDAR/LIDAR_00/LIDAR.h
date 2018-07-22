@@ -17,6 +17,8 @@ public:
 	NetworkManager *Network;
 	LMS *LMSInterface;
 
+	ScanData *Data;
+
 	LIDAR(HINSTANCE hInstance, INT iCmdShow);
 	~LIDAR();
 

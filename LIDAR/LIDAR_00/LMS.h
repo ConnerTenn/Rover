@@ -1,5 +1,7 @@
 
 struct ScanConfig;
+struct ScanDataConfig;
+struct ScanData;
 class LMS;
 
 #pragma once
